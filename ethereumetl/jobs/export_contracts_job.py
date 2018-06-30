@@ -31,7 +31,7 @@ class ExportContractsJob(BaseJob):
 
     def _export_contracts(self, contract_addresses):
         contracts_code_rpc = list(generate_get_code_json_rpc(contract_addresses))
-        response_batch= self.ipc_wrapper.make_request(json.dumps(contracts_code_rpc))
+        response_batch = self.ipc_wrapper.make_request(json.dumps(contracts_code_rpc))
 
         contracts = []
         for response in response_batch:
