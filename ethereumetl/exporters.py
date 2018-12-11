@@ -226,6 +226,7 @@ class MongoItemExporter(BaseItemExporter):
         #for _, x in fields:
         #    print(x)
         #print(fields)
+        
         lst = dict(fields)
         for _, x in lst:
             print(x)
