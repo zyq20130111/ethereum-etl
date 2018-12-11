@@ -226,9 +226,10 @@ class MongoItemExporter(BaseItemExporter):
         #for _, x in fields:
         #    print(x)
         #print(fields)
-        
+
         lst = dict(fields)
-        for _, x in lst:
-            print(x)
+        print(lst)
+        #for _, x in lst:
+        #    print(x)
         
         self.db[self.db_name].insert_one(dict(fields))
