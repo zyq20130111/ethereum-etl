@@ -63,6 +63,7 @@ class CompositeItemExporter:
 
                 fields = self.field_mapping[item_type]
                 item_exporter = MongoItemExporter(self.db,fields_to_export=fields,db_name=item_type)
+                self.exporter_mapping[item_type] = item_exporter
                 self.counter_mapping[item_type] = AtomicCounter()
 
 
