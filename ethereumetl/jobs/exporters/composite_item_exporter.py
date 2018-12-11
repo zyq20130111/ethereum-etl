@@ -62,6 +62,7 @@ class CompositeItemExporter:
                 self.db = self.conn.eth
                 self.db.authenticate("root","galaxy123456@")
 
+                fields = self.field_mapping[item_type]
                 item_exporter = MongoItemExporter(self.db,fields_to_export=fields,db_name=self.db_name)
                 self.counter_mapping[item_type] = AtomicCounter()
 
