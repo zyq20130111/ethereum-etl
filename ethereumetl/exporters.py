@@ -222,5 +222,5 @@ class MongoItemExporter(BaseItemExporter):
         print("export_item")
         fields = self._get_serialized_fields(item, default_value='',
                                              include_empty=True)
-        json = json.dumps(fields)
-        self.db[self.db_name].insert_one(json)
+        js = json.dumps(fields)
+        self.db[self.db_name].insert_one(js)
