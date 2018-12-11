@@ -94,6 +94,7 @@ for (( batch_start_block=$start_block; batch_start_block <= $end_block; batch_st
     python3 export_blocks_and_transactions.py --start-block=${batch_start_block} --end-block=${batch_end_block} --provider-uri="${provider_uri}" --blocks-output=${blocks_file} --transactions-output=${transactions_file}
     quit_if_returned_error
 
+<<COMMENT
     ### token_transfers
 
     token_transfers_output_dir=${output_dir}/token_transfers${partition_dir}
@@ -166,4 +167,6 @@ for (( batch_start_block=$start_block; batch_start_block <= $end_block; batch_st
     time_diff=$((end_time-start_time))
 
     log "Exporting blocks ${block_range} took ${time_diff} seconds"
+COMMENT
 done
+
