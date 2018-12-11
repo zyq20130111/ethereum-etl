@@ -1,3 +1,4 @@
+
 # Copyright (c) Scrapy developers.
 # All rights reserved.
 #
@@ -30,6 +31,7 @@
 Item Exporters are used to export/serialize items into different formats.
 """
 
+import json
 import csv
 import io
 import threading
@@ -52,6 +54,7 @@ class BaseItemExporter(object):
         self.fields_to_export = options.pop('fields_to_export', None)
         self.export_empty_fields = options.pop('export_empty_fields', False)
         self.indent = options.pop('indent', None)
+        self.db_name = options.pop('db_name', None)
         if not dont_fail and options:
             raise TypeError("Unexpected options: %s" % ', '.join(options.keys()))
 
@@ -205,3 +208,19 @@ def to_unicode(text, encoding=None, errors='strict'):
     if encoding is None:
         encoding = 'utf-8'
     return text.decode(encoding, errors)
+
+
+class MongoItemExporter(BaseItemExporter):
+
+    def __init__(self,db, **kwargs):
+
+        self.db = db
+        self._configure(kwargs, dont_fail=True)
+        print("__init__")
+        
+    def export_item(self, item):
+        print("export_item")
+        fields = self._get_serialized_fields(item, default_value='',
+                                             include_empty=True)
+        json = json.dumps(fields)
+        self.db[self.db_name].insert_one(json)
