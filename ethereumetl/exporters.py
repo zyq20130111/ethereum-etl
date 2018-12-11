@@ -232,4 +232,4 @@ class MongoItemExporter(BaseItemExporter):
         #for _, x in lst:
         #    print(x)
         
-        self.db[self.db_name].insert_one(dict(fields))
+        self.db[self.db_name].insert_one(lst)
