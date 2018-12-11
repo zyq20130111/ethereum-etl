@@ -27,7 +27,7 @@ from ethereumetl.file_utils import get_file_handle, close_silently
 
 
 class CompositeItemExporter:
-    def __init__(self, filename_mapping, field_mapping,db_name):
+    def __init__(self, filename_mapping, field_mapping):
         self.filename_mapping = filename_mapping
         self.field_mapping = field_mapping
 
@@ -36,7 +36,6 @@ class CompositeItemExporter:
         self.counter_mapping = {}
 
         self.usedb = False
-        self.db_name = db_name
         self.conn = None
 
         self.logger = logging.getLogger('CompositeItemExporter')
@@ -63,7 +62,7 @@ class CompositeItemExporter:
                 self.db.authenticate("root","galaxy123456@")
 
                 fields = self.field_mapping[item_type]
-                item_exporter = MongoItemExporter(self.db,fields_to_export=fields,db_name=self.db_name)
+                item_exporter = MongoItemExporter(self.db,fields_to_export=fields,db_name=item_type)
                 self.counter_mapping[item_type] = AtomicCounter()
 
 

@@ -68,7 +68,5 @@ def blocks_and_transactions_item_exporter(blocks_output=None, transactions_outpu
         field_mapping={
             'block': BLOCK_FIELDS_TO_EXPORT,
             'transaction': TRANSACTION_FIELDS_TO_EXPORT
-        },
-        db_name="blocks"
-
+        }
     )
