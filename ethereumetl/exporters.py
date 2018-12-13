@@ -237,5 +237,5 @@ class MongoItemExporter(BaseItemExporter):
             print(lst["gas"])
             print(lst["gas_price"])
             print(lst["input"])
-            print(lst["vale"])
+            print(lst["value"])
             raise ValueError('Exporter for item insert_one')
