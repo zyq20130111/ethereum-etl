@@ -1,4 +1,3 @@
-from Cython.Includes.cpython import long
 
 # Copyright (c) Scrapy developers.
 # All rights reserved.
@@ -96,7 +95,7 @@ class BaseItemExporter(object):
             else:
                 value = default_value
 
-                if(type(value) is int or type(value) is long):
+                if type(value) is int :
                     value = float(value)
 
             yield field_name, value
