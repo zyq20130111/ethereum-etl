@@ -34,17 +34,17 @@ class CompositeItemExporter:
         self.file_mapping = {}
         self.exporter_mapping = {}
         self.counter_mapping = {}
+        self.mongo_exporter = None
 
         self.usedb = False
         self.conn = None
 
         self.logger = logging.getLogger('CompositeItemExporter')
 
-    def open(self,db = True):
-        self.usedb = db
+    def open(self):
+
         for item_type, filename in self.filename_mapping.items():
             
-            if(self.usedb == False):
                 
                 file = get_file_handle(filename, binary=True)
                 fields = self.field_mapping[item_type]
@@ -56,15 +56,15 @@ class CompositeItemExporter:
                 self.exporter_mapping[item_type] = item_exporter
 
                 self.counter_mapping[item_type] = AtomicCounter()
-            else:
+            
+                #导出数据导mongodb
                 self.conn = pm.MongoClient('mongodb://localhost:27017/')
                 self.db = self.conn.eth
                 self.db.authenticate("root","galaxy123456@")
 
                 fields = self.field_mapping[item_type]
                 item_exporter = MongoItemExporter(self.db,fields_to_export=fields,db_name=item_type)
-                self.exporter_mapping[item_type] = item_exporter
-                self.counter_mapping[item_type] = AtomicCounter()
+                self.mongo_exporter = item_exporter
 
 
     def export_item(self, item):
@@ -77,15 +77,18 @@ class CompositeItemExporter:
             raise ValueError('Exporter for item type {} not found'.format(item_type))
         exporter.export_item(item)
 
+        #导出数据导mongodb
+        if self.mongo_exporter is None:
+            raise ValueError('Exporter for item mongo_exporter not found')
+        self.mongo_exporter.export_item(item)
+
         counter = self.counter_mapping.get(item_type)
         if counter is not None:
             counter.increment()
 
     def close(self):
 
-        if(self.db):
-            self.conn.close()
-            return
+        self.conn.close()
         
         for item_type, file in self.file_mapping.items():
             close_silently(file)
