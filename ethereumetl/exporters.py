@@ -95,8 +95,9 @@ class BaseItemExporter(object):
             else:
                 value = default_value
 
-                if type(value) is int :
-                    value = float(value)
+            #处理长整形
+            if type(value) is int :
+                value = float(value)
 
             yield field_name, value
 
