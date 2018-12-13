@@ -34,13 +34,17 @@ class CompositeItemExporter:
         self.file_mapping = {}
         self.exporter_mapping = {}
         self.counter_mapping = {}
-        self.mongo_exporter = None
+        self.mongo_exporter = {}
 
         self.conn = None
 
         self.logger = logging.getLogger('CompositeItemExporter')
 
     def open(self):
+
+        self.conn = pm.MongoClient('mongodb://localhost:27017/')
+        self.db = self.conn.eth
+        self.db.authenticate("root","galaxy123456@")
 
         for item_type, filename in self.filename_mapping.items():
             
@@ -57,13 +61,10 @@ class CompositeItemExporter:
                 self.counter_mapping[item_type] = AtomicCounter()
             
                 #导出数据导mongodb
-                self.conn = pm.MongoClient('mongodb://localhost:27017/')
-                self.db = self.conn.eth
-                self.db.authenticate("root","galaxy123456@")
 
                 fields = self.field_mapping[item_type]
                 item_exporter = MongoItemExporter(self.db,fields_to_export=fields,db_name=item_type)
-                self.mongo_exporter = item_exporter
+                self.mongo_exporter[item_type] = item_exporter
 
 
     def export_item(self, item):
@@ -77,9 +78,10 @@ class CompositeItemExporter:
         exporter.export_item(item)
 
         #导出数据导mongodb
-        if self.mongo_exporter is None:
+        mongo_exporter = self.mongo_exporter[item_type]
+        if mongo_exporter is None:
             raise ValueError('Exporter for item mongo_exporter not found')
-        self.mongo_exporter.export_item(item)
+        mongo_exporter.export_item(item)
 
         counter = self.counter_mapping.get(item_type)
         if counter is not None:
