@@ -227,6 +227,14 @@ class MongoItemExporter(BaseItemExporter):
         try:
             self.db[self.db_name].insert_one(lst)
         except:
-            for x,y in lst:
-                print(x,"--",y)
+            print(lst["hash"])
+            print(lst["nonce"])
+            print(lst["block_hash"])
+            print(lst["block_number"])
+            print(lst["transaction_index"])
+            print(lst["from_address"])
+            print(lst["to_address"])
+            print(lst["gas"])
+            print(lst["gas_price"])
+            print(lst["input"])
             raise ValueError('Exporter for item insert_one')
