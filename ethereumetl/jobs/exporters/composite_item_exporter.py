@@ -36,7 +36,6 @@ class CompositeItemExporter:
         self.counter_mapping = {}
         self.mongo_exporter = None
 
-        self.usedb = False
         self.conn = None
 
         self.logger = logging.getLogger('CompositeItemExporter')
