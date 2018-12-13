@@ -216,13 +216,17 @@ class MongoItemExporter(BaseItemExporter):
 
         self.db = db
         self._configure(kwargs, dont_fail=True)
-        print("__init__")
         
     def export_item(self, item):
-        print("export_item")
+
         fields = self._get_serialized_fields(item, default_value='',
                                              include_empty=True)
 
         lst = dict(fields)
         
-        self.db[self.db_name].insert_one(lst)
+        try:
+            self.db[self.db_name].insert_one(lst)
+        except:
+            for x,y in lst:
+                print(x,"--",y)
+            raise ValueError('Exporter for item insert_one')
