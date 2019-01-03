@@ -42,9 +42,12 @@ class CompositeItemExporter:
 
     def open(self):
 
-        self.conn = pm.MongoClient('mongodb://localhost:27017/')
+        #self.conn = pm.MongoClient('mongodb://localhost:27017/')
+        #self.db = self.conn.eth
+        #self.db.authenticate("root","galaxy123456@")
+
+        self.conn = pm.MongoClient('mongodb://172.17.156.121:27017/')
         self.db = self.conn.eth
-        self.db.authenticate("root","galaxy123456@")
 
         for item_type, filename in self.filename_mapping.items():
             
